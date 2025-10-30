@@ -10,4 +10,4 @@ mc alias set $MINIO_ALIAS "http://${MINIO_HOST}:${MINIO_PORT}" $MINIO_USERNAME $
 
 echo ""
 echo "Available MinIO Buckets:"
-mc ls $MINIO_ALIAS/$MINIO_BUCKET_NAME
+mc ls --recursive $MINIO_ALIAS/homelab-terragrunt-tfstates
