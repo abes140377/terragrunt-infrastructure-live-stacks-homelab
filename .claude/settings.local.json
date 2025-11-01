@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "mcp__Ref__ref_read_url",
-      "mcp__Ref__ref_search_documentation"
+      "mcp__Ref__ref_search_documentation",
+      "Read(//Users/seba/projects/sflab/src/terragrunt/terragrunt-infrastructure-catalog-homelab/**)"
     ],
     "deny": [],
     "ask": []

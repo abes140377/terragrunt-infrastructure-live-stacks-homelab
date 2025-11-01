@@ -45,25 +45,26 @@ unit "proxmox_vm" {
   }
 }
 
-# unit "dns" {
-#   // You'll typically want to pin this to a particular version of your catalog repo.
-#   // e.g.
-#   // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=v0.1.0"
-#   source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns"
+unit "dns" {
+  // You'll typically want to pin this to a particular version of your catalog repo.
+  // e.g.
+  // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=v0.1.0"
+  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns"
 
-#   path = "dns"
+  path = "dns"
 
-#   values = {
-#     // This version here is used as the version passed down to the unit
-#     // to use when fetching the OpenTofu/Terraform module.
-#     version = "main"
+  values = {
+    // This version here is used as the version passed down to the unit
+    // to use when fetching the OpenTofu/Terraform module.
+    version = "main"
 
-#     zone          = "home.sflab.io."
-#     name          = "docker-${local.environment_name}"
-#     dns_server    = "192.168.1.13"
-#     dns_port      = 5353
-#     key_name      = "ddnskey."
-#     key_algorithm = "hmac-sha512"
-#     vm_unit_path  = "../dns"
-#   }
-# }
+    zone          = "home.sflab.io."
+    name          = "docker-host-1"
+    dns_server    = "192.168.1.13"
+    dns_port      = 5353
+    key_name      = "ddnskey."
+    key_algorithm = "hmac-sha512"
+
+    vm_unit_path  = "../proxmox-vm"
+  }
+}
