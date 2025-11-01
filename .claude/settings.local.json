@@ -1,6 +1,9 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "mcp__Ref__ref_read_url",
+      "mcp__Ref__ref_search_documentation"
+    ],
     "deny": [],
     "ask": []
   }
