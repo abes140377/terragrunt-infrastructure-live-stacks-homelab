@@ -12,7 +12,7 @@ locals {
 unit "proxmox_pool" {
   // You'll typically want to pin this to a particular version of your catalog repo.
   // e.g.
-  # source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=v0.1.0"
+  // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=v0.1.0"
   source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool"
 
   path = "proxmox-pool"
