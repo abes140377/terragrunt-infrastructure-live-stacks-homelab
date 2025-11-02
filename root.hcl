@@ -20,22 +20,6 @@ locals {
   s3_backend_secret_key = get_env("AWS_SECRET_ACCESS_KEY")
 }
 
-# Generate Proxmox provider block
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "proxmox" {
-  endpoint  = "${local.proxmox_endpoint}"
-  insecure  = true
-
-  ssh {
-    agent = true
-  }
-}
-EOF
-}
-
 # Generate the remote backend
 remote_state {
   backend = "s3"
