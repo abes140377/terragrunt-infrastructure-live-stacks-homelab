@@ -12,8 +12,8 @@ locals {
 unit "proxmox_pool" {
   // You'll typically want to pin this to a particular version of your catalog repo.
   // e.g.
-  // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=v0.1.0"
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=feat/next"
+  # source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=v0.1.0"
+  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool"
 
   path = "proxmox-pool"
 
@@ -30,7 +30,7 @@ unit "proxmox_vm" {
   // You'll typically want to pin this to a particular version of your catalog repo.
   // e.g.
   // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-vm?ref=v0.1.0"
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-vm?ref=feat/next"
+  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-vm"
 
   path = "proxmox-vm"
 
@@ -49,7 +49,7 @@ unit "dns" {
   // You'll typically want to pin this to a particular version of your catalog repo.
   // e.g.
   // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=v0.1.0"
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=feat/next"
+  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns"
 
   path = "dns"
 
