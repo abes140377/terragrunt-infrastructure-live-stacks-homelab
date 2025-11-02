@@ -4,14 +4,8 @@
 # remote state, and locking: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
 locals {
-  # Read proxmox_endpoint from root.hcl
-  root_vars        = read_terragrunt_config(find_in_parent_folders("root.hcl"))
-  proxmox_endpoint = local.root_vars.locals.proxmox_endpoint
+  proxmox_endpoint = "https://proxmox.home.sflab.io:8006/"
 }
 
 # Generate Proxmox provider block
