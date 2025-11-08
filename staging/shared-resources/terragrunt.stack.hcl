@@ -1,4 +1,6 @@
 locals {
+  version = "feat/next"
+
   # Load environment variables
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
 
@@ -10,17 +12,14 @@ locals {
 }
 
 unit "proxmox_pool" {
-  // You'll typically want to pin this to a particular version of your catalog repo.
-  // e.g.
-  // source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=v0.1.0"
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=feat/next"
+  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-pool?ref=${local.version}"
 
   path = "proxmox-pool"
 
   values = {
     // This version here is used as the version passed down to the unit
     // to use when fetching the OpenTofu/Terraform module.
-    version = "main"
+    version = local.version
 
     pool_id = "pool-${local.environment_name}"
   }

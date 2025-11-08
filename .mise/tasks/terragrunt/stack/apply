@@ -30,15 +30,12 @@ fi
 
 cd "$MISE_CONFIG_ROOT/$ENVIRONMENT/$selected_stack"
 
-STACK_GENERATE_CMD="terragrunt stack generate"
-STACK_RUN_APPLY_CMD="terragrunt stack run apply"
+STACK_CMD="terragrunt stack run apply"
 
 echo ""
 echo "🚀 Executing..."
-echo "   Commands:"
-echo "     - $STACK_GENERATE_CMD"
-echo "     - $STACK_RUN_APPLY_CMD"
-echo "   Working directory: $(pwd)"
+echo "   Commands: $STACK_CMD"
+echo "   Working dir: $(pwd)"
 echo ""
 
 if [ "$usage_dry_run" = "true" ]; then
@@ -46,6 +43,4 @@ if [ "$usage_dry_run" = "true" ]; then
   exit 0
 fi
 
-eval $STACK_GENERATE_CMD
-
-eval $STACK_RUN_APPLY_CMD
+eval $STACK_CMD
