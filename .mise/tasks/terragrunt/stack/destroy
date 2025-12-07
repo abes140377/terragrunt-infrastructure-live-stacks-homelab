@@ -45,13 +45,4 @@ if [ "$usage_dry_run" = "true" ]; then
   exit 0
 fi
 
-echo "⚠️ Are you really sure to destroy the stack?"
-read -p "Type 'do it' to confirm: " confirm
-
-if [[ "$confirm" != "do it" ]]; then
-  echo ""
-  echo "Destroy aborted by user"
-  exit 1
-fi
-
 eval $CMD
