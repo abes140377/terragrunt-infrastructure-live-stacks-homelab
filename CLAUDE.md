@@ -149,9 +149,12 @@ mise run terragrunt:stack:generate
 
 # Interactive stack plan (prompts for environment and stack selection)
 mise run terragrunt:stack:plan
+
+# Edit SOPS-encrypted secrets file
+mise run secrets:edit .creds.env.yaml
 ```
 
-**Note**: The `secrets:edit` task has been removed from mise tasks.
+**Note**: The `secrets:edit` task is available as a global mise task from `~/.config/mise/tasks/secrets/edit`.
 
 ### Terragrunt Operations
 
@@ -376,13 +379,15 @@ This removes:
    - References: `pool-staging` from proxmox-pool stack
    - DNS zone: `home.sflab.io.`
    - Network: DHCP
+   - SSH key: `keys/ansible_id_ecdsa.pub`
 
 3. **proxmox-pki-vm** (`staging/proxmox-pki-vm/`)
    - Purpose: PKI/Certificate management VM
    - Contains: `proxmox_vm`, `dns` units
    - References: `pool-staging` from proxmox-pool stack
    - DNS zone: `home.sflab.io.`
-   - Network: DHCP
+   - Network: Static IP (192.168.1.33/24, gateway 192.168.1.1)
+   - SSH key: `keys/ansible_id_ecdsa.pub`
 
 ### Current Production Stacks
 
