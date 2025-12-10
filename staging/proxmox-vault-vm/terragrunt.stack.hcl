@@ -10,7 +10,7 @@ locals {
   # Use environment_name in stack name
   pool_id = "pool-${local.environment_name}"
 
-  app = "pki"
+  app = "vault"
   zone = "home.sflab.io."
 
   # SSH public key path for Ansible access
@@ -35,6 +35,8 @@ unit "proxmox_vm" {
       ip_address  = "192.168.1.33"
       cidr        = 24
       gateway     = "192.168.1.1"
+      dns_servers = ["192.168.1.13", "192.168.1.14"]
+      domain      = "home.sflab.io"
     }
   }
 }
