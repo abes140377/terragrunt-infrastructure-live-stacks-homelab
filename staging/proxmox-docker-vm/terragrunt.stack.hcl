@@ -47,7 +47,8 @@ unit "dns" {
     env = local.environment_name
     app = local.app
 
-    zone = local.zone
+    wildcard = true
+    zone     = local.zone
 
     compute_path = "../proxmox-vm"
   }
