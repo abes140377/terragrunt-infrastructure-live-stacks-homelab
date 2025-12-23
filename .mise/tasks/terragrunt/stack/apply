@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#MISE description="Applies the given Terragrunt stack."
+
 #USAGE arg "<env>" help="The environment to use" default=""
 #USAGE arg "<target>" help="The target unit" default=""
 #USAGE flag "-d --dry-run" help="Show the commands without executing it"

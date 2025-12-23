@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-#MISE description="Destroys the given Terragrunt stack."
+#MISE description="Outputs the values of all outputs for a given Terragrunt stack."
 
 #USAGE arg "<env>" help="The environment to use" default=""
 #USAGE arg "<target>" help="The target unit" default=""
 #USAGE flag "-d --dry-run" help="Show the commands without executing it"
-#USAGE flag "-y --yes" help="Automatic yes to prompts" default="false"
 
 #MISE raw=true
 
@@ -35,13 +34,10 @@ fi
 
 cd "$MISE_CONFIG_ROOT/$ENVIRONMENT/$SELECTED_STACK"
 
-CMD="terragrunt stack run destroy"
-if [ "${usage_yes?}" = "true" ]; then
-  CMD+=" --non-interactive"
-fi
+CMD="terragrunt stack output"
 
 echo ""
-echo "🚀 Executing 'mise run terragrunt:stack:destroy $ENVIRONMENT $SELECTED_STACK'"
+echo "🚀 Executing 'mise run terragrunt:stack:output $ENVIRONMENT $SELECTED_STACK'"
 echo "   Commands: $CMD"
 echo "   Working dir: $(pwd)"
 echo ""
