@@ -18,7 +18,7 @@ locals {
 }
 
 unit "proxmox_vm" {
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-vm?ref=${local.version}"
+  source = "git::git@github.com:sflab-io/terragrunt-infrastructure-catalog-homelab.git//units/proxmox-vm?ref=${local.version}"
 
   path = "proxmox-vm"
 
@@ -37,7 +37,7 @@ unit "proxmox_vm" {
 }
 
 unit "dns" {
-  source = "git::git@github.com:abes140377/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=${local.version}"
+  source = "git::git@github.com:sflab-io/terragrunt-infrastructure-catalog-homelab.git//units/dns?ref=${local.version}"
 
   path = "dns"
 

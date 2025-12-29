@@ -34,7 +34,7 @@ remote_state {
 # Configure what repositories to search when you run 'terragrunt catalog'
 catalog {
   urls = [
-    "https://github.com/abes140377/terragrunt-infrastructure-catalog-homelab.git",
+    "https://github.com/sflab-io/terragrunt-infrastructure-catalog-homelab.git",
   ]
 }
 
