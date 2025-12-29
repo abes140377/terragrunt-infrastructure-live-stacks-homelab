@@ -8,7 +8,8 @@ locals {
   environment_name = local.environment_vars.locals.environment_name
 
   # default VM specs
-  memory = 4096
+  memory_cp = 2048
+  memory_w = 4096
   cores  = 2
 
   # Use environment_name in stack name
@@ -32,14 +33,12 @@ unit "vm_cp1" {
     env = local.environment_name
     app = "${local.app}-cp1"
 
-    memory = local.memory
     cores  = local.cores
+    memory = local.memory_cp
 
     pool_id = local.pool_id
+
     ssh_public_key_path = local.ssh_public_key_path
-    # network_config = {
-    #   type = "dhcp"
-    # }
   }
 }
 
@@ -75,14 +74,11 @@ unit "vm_w1" {
     env = local.environment_name
     app = "${local.app}-w1"
 
-    memory = local.memory
     cores  = local.cores
+    memory = local.memory_w
 
     pool_id = local.pool_id
     ssh_public_key_path = local.ssh_public_key_path
-    # network_config = {
-    #   type = "dhcp"
-    # }
   }
 }
 
@@ -118,14 +114,11 @@ unit "vm_w2" {
     env = local.environment_name
     app = "${local.app}-w2"
 
-    memory = local.memory
     cores  = local.cores
+    memory = local.memory_w
 
     pool_id = local.pool_id
     ssh_public_key_path = local.ssh_public_key_path
-    # network_config = {
-    #   type = "dhcp"
-    # }
   }
 }
 
