@@ -68,8 +68,10 @@ This repository uses Terragrunt's **Stacks** feature for managing multi-unit dep
 
 3. **dns-config.hcl**: DNS provider configuration
    - DNS server: 192.168.1.13:53
-   - Key settings for dynamic DNS updates (hmac-sha256)
+   - Key name: `ddnskey.`
+   - Key algorithm: hmac-sha256
    - Used for automatic DNS record creation for VMs
+   - Note: Key secret is stored in environment variable `TF_VAR_dns_key_secret`
 
 4. **environment.hcl**: Environment-specific variables (e.g., `environment_name = "staging"`)
 
@@ -104,10 +106,11 @@ The repository uses a **proxmox-pool** stack pattern for environment-wide resour
 ### Remote State Backend
 
 - Uses **MinIO** as S3-compatible backend
-- Bucket naming: `{prefix}-tfstates` (e.g., `staging-tfstates`, `production-tfstates`)
-  - Prefix is defined in `{environment}/backend-config.hcl`
+- Bucket naming: `{prefix}-tfstates` (e.g., `staging-terragrunt-tfstates`, `production-terragrunt-tfstates`)
+  - Staging prefix: `staging-terragrunt` (defined in `staging/backend-config.hcl`)
+  - Production prefix: `production-terragrunt` (defined in `production/backend-config.hcl`)
 - Requires environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-- MinIO endpoint: `http://minio.home.sflab.io:9000`
+- MinIO endpoint: `http://192.168.1.20:9000` (alternative: `http://minio.home.sflab.io:9000`)
 - Configuration is environment-specific via `backend-config.hcl` files
 
 ### Infrastructure Catalog
@@ -155,11 +158,19 @@ mise run terragrunt:stack:plan
 # Interactive stack output (prompts for environment and stack selection)
 mise run terragrunt:stack:output
 
+# Configure network settings
+mise run network:configure
+
+# Print current network configuration
+mise run network:status
+
 # Edit SOPS-encrypted secrets file
 mise run secrets:edit .creds.env.yaml
 ```
 
-**Note**: The `secrets:edit` task is available as a global mise task from `~/.config/mise/tasks/secrets/edit`.
+**Notes**:
+- The `secrets:edit` task is available as a global mise task from `~/.config/mise/tasks/secrets/edit`
+- The `network:configure` and `network:status` tasks are available for network management
 
 ### Terragrunt Operations
 
@@ -215,11 +226,12 @@ terragrunt destroy
 These must be set before running Terragrunt commands:
 
 ```bash
-AWS_ACCESS_KEY_ID          # MinIO access key for state backend
-AWS_SECRET_ACCESS_KEY      # MinIO secret key for state backend
-MINIO_USERNAME             # MinIO admin username (for setup tasks)
-MINIO_PASSWORD             # MinIO admin password (for setup tasks)
-PROXMOX_CONTAINER_PASSWORD # Password for LXC containers (for container stacks)
+AWS_ACCESS_KEY_ID           # MinIO access key for state backend
+AWS_SECRET_ACCESS_KEY       # MinIO secret key for state backend
+MINIO_USERNAME              # MinIO admin username (for setup tasks)
+MINIO_PASSWORD              # MinIO admin password (for setup tasks)
+PROXMOX_CONTAINER_PASSWORD  # Password for LXC containers (for container stacks)
+TF_VAR_dns_key_secret       # DNS TSIG key secret for dynamic DNS updates
 ```
 
 **Note**: Environment variables are loaded automatically from:
@@ -417,7 +429,7 @@ This removes:
   - Units within a stack can reference each other using relative paths (e.g., `compute_path = "../proxmox-vm"`)
   - Cross-stack dependencies (like shared pools) are referenced by ID/name, not paths
 - **State Management**: Each unit gets its own state file in the S3 bucket, organized by path
-- **Proxmox Endpoint**: Currently configured for `https://proxmox.home.sflab.io:8006/`
+- **Proxmox Endpoint**: Currently configured for `https://192.168.1.12:8006/` (alternative: `https://proxmox.home.sflab.io:8006/`)
 - **Cache Directories**: `.terragrunt-stack/` and `.terragrunt-cache/` are generated and should not be committed to git
 
 ## Troubleshooting
@@ -486,6 +498,19 @@ This removes:
    - SSH key: `keys/admin_id_ecdsa.pub`
    - Requires: `PROXMOX_CONTAINER_PASSWORD` environment variable
 
+6. **proxmox-dns-lxc** (`staging/proxmox-dns-lxc/`)
+   - Purpose: Technitium DNS servers (primary and secondary) for homelab DNS infrastructure
+   - Contains: `proxmox_lxc_1`, `proxmox_lxc_2` units (no DNS units - these ARE the DNS servers)
+   - References: `pool-staging` from proxmox-pool stack
+   - Network: Static IP configuration
+     - DNS 1: 192.168.1.153/24 (technitium-dns-1-staging)
+     - DNS 2: 192.168.1.154/24 (technitium-dns-2-staging)
+     - Gateway: 192.168.1.1
+     - DNS servers: 192.168.1.1
+   - SSH key: `keys/admin_id_ecdsa.pub`
+   - Requires: `PROXMOX_CONTAINER_PASSWORD` environment variable
+   - Note: Does not create DNS records (these containers ARE the DNS infrastructure)
+
 ### Current Production Stacks
 
 1. **proxmox-pool** (`production/proxmox-pool/`)
@@ -527,3 +552,15 @@ This removes:
    - Network: DHCP with DNS servers (192.168.1.13, 192.168.1.154) and domain (home.sflab.io)
    - SSH key: `keys/admin_id_ecdsa.pub`
    - Requires: `PROXMOX_CONTAINER_PASSWORD` environment variable
+
+6. **proxmox-dns-lxc** (`production/proxmox-dns-lxc/`)
+   - Purpose: Technitium DNS secondary server for homelab DNS infrastructure
+   - Contains: `proxmox_lxc` unit (single secondary DNS server, no DNS unit)
+   - References: `pool-production` from proxmox-pool stack
+   - Network: Static IP configuration
+     - IP: 192.168.1.154/24 (technitium-dns-secondary-production)
+     - Gateway: 192.168.1.1
+     - DNS servers: 192.168.1.1
+   - SSH key: `keys/admin_id_ecdsa.pub`
+   - Requires: `PROXMOX_CONTAINER_PASSWORD` environment variable
+   - Note: Does not create DNS records (this container IS part of the DNS infrastructure)
